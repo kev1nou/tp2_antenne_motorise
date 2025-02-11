@@ -8,11 +8,13 @@
 Servo myServo;
 int positionServo;
 
+int previousMillis = 0;
+int temps = 1000; //Pour 1 seconde timer
 
 void setup() {
   Serial.begin(9600);  // Start serial communication
   Wire.begin();  // Start I2C communication
-  myServo.attach(3); //Pin 3 servo
+  myServo.attach(3);
 }
 
 void loop() {
@@ -31,14 +33,16 @@ void loop() {
 
     // Print the mapped value (0-255) to the serial monitor
     Serial.println(mappedValue);
-  
-    if (mappedValue <= 45){ //Si l'angle est de moins ou egal a 45 degres
+    int currentMillis = millis();
+    if (currentMillis - previousMillis >= temps) { //Boucle de 1 seconde
+      previousMillis = currentMillis;
+      if (mappedValue <= 120){ //Si l'angle est de moins ou egal a 120 degres
         myServo.writeMicroseconds(900); //CCW MAX
-    }
-    else if (mappedValue >= 0){ //Si l'angle est plus grand ou egal a 0 degres
+      }
+      else if (mappedValue >= 0){ //Si l'angle est plus grand ou egal a 0 degres
         myServo.writeMicroseconds(2100); //CW MAX
-    } 
-  }   
-}
+      } 
+    }   
+  }
   delay(100);  // Update every 100ms
 }
