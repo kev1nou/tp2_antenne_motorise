@@ -25,11 +25,10 @@ void loop() {
     int heading = Wire.read() << 8 | Wire.read();  // Combine the two bytes into one integer
     heading = heading & 0xFFF;  // Ensure it's in the range 0-360 (CMPS12 outputs 12-bit data)
 
-    // Map the heading (0-360) to 0-255 range
+    // Map the heading (0-360) to 0-3599 range
     int mappedValue = map(heading, 0, 360, 0, 360);
 
-    // Print the mapped value (0-255) to the serial monitor
+    // Print the mapped value (0-360) to the serial monitor
     Serial.println(mappedValue);
   }
   delay(100);  // Update every 100ms
-}
