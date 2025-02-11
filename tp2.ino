@@ -1,5 +1,5 @@
-//Kevin Heng
-//TP2 - Antenne motorisée
+//Kevin Heng //
+//TP2 - Antenne motorisée //
 
 
 #include <Servo.h>
