@@ -9,7 +9,7 @@ Servo myServo;
 int positionServo;
 
 int previousMillis = 0;
-int temps = 1000; //Pour 1 seconde timer
+int temps = 10; //Pour 10 ms timer
 
 void setup() {
   Serial.begin(9600);  // Start serial communication
