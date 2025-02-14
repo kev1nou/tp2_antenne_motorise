@@ -13,7 +13,7 @@ Servo myServo;
 int positionServo;
 
 int previousMillis = 0;
-int temps = 1000; //Pour 1s timer
+int temps = 10; //Pour 10ms timer
 int angleSortie = 120;
 
 
@@ -41,7 +41,7 @@ void loop() {
     Serial.print("Angle : ");
     Serial.println(angle);
     int currentMillis = millis();
-    if (currentMillis - previousMillis >= temps) { //Boucle de 1 seconde
+    if (currentMillis - previousMillis >= temps) { //Boucle de 10ms
       previousMillis = currentMillis;
     int erreur = angleSortie - angle;
     erreur = erreur % 360;
