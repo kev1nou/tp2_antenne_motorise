@@ -5,11 +5,17 @@
 #include <Servo.h>
 #include <Wire.h>
 #define CMPS12_ADDRESS 0x60
+#define kp 5.083
+#define umin 900
+#define umax 2100
+
 Servo myServo;
 int positionServo;
 
 int previousMillis = 0;
-int temps = 10; //Pour 10 ms timer
+int temps = 1000; //Pour 1s timer
+int angleSortie = 120;
+
 
 void setup() {
   Serial.begin(9600);  // Start serial communication
@@ -29,19 +35,26 @@ void loop() {
     int heading = Wire.read();
 
     // Map the heading (0-255)
-    int mappedValue = map(heading, 0, 255, 0, 255);
+    int angle = map(heading, 0, 255, 0, 255);
 
     // Print the mapped value (0-255) to the serial monitor
-    Serial.println(mappedValue);
+    Serial.print("Angle : ");
+    Serial.println(angle);
     int currentMillis = millis();
     if (currentMillis - previousMillis >= temps) { //Boucle de 1 seconde
       previousMillis = currentMillis;
-      if (mappedValue <= 120){ //Si l'angle est de moins ou egal a 120 degres
-        myServo.writeMicroseconds(900); //CCW MAX
+    int erreur = angleSortie - angle;
+    erreur = erreur % 360;
+      if (erreur > 180){
+        erreur = erreur - 360;
       }
-      else if (mappedValue >= 0){ //Si l'angle est plus grand ou egal a 0 degres
-        myServo.writeMicroseconds(2100); //CW MAX
-      } 
+    int u = float(kp*erreur) + 1490;
+    myServo.writeMicroseconds(u);
+    u = u < umax ? umax : u;
+    u = u > umin ? umin : u;
+    
+    Serial.print("Erreur : ");
+    Serial.println(erreur);
     }   
   }
   delay(100);  // Update every 100ms
